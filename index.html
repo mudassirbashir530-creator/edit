@@ -7,60 +7,74 @@
     <title>Ultra-HD Branding Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --brand-primary: #6366f1;
+            --brand-secondary: #a855f7;
+            --bg-light: #f8fafc;
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0e1117;
-            color: #fafafa;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #1e293b;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
-        .st-sidebar {
-            background-color: #262730;
-            border-right: 1px solid rgba(250, 250, 250, 0.1);
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .st-card {
-            background-color: #262730;
-            border: 1px solid rgba(250, 250, 250, 0.1);
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .st-button-primary {
-            background-color: transparent;
-            border: 1px solid #ff4b4b;
-            color: #ff4b4b;
-            transition: all 0.2s;
-        }
-
-        .st-button-primary:hover {
-            background-color: #ff4b4b;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: white;
         }
 
-        .st-success {
-            background-color: rgba(35, 134, 54, 0.15);
-            border: 1px solid rgba(35, 134, 54, 0.3);
-            color: #3fb950;
+        .st-button-primary:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
         }
 
-        .st-warning {
-            background-color: rgba(187, 128, 9, 0.15);
-            border: 1px solid rgba(187, 128, 9, 0.3);
-            color: #d29922;
+        .st-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
+        .st-card:hover {
+            border-color: rgba(99, 102, 241, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
         }
-        ::-webkit-scrollbar-track {
-            background: #0e1117;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 3px;
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { 
+            background: #cbd5e1; 
+            border-radius: 10px; 
+            border: 2px solid #f1f5f9;
         }
     </style>
 <script type="importmap">
@@ -71,7 +85,11 @@
     "react/": "https://esm.sh/react@^19.2.4/",
     "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
     "jszip": "https://esm.sh/jszip@^3.10.1",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0"
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "framer-motion": "https://esm.sh/framer-motion@^11.11.17",
+    "@imgly/background-removal": "https://esm.sh/@imgly/background-removal@^1.5.5",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>

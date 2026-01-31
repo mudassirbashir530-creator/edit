@@ -2,13 +2,10 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Corner } from "../types";
 
+// Helper to analyze product images using Gemini to find the best corner for branding
 export const findBestCorner = async (imageBase64: string): Promise<Corner> => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    throw new Error("API Key is missing. Please ensure it is configured.");
-  }
-
-  const ai = new GoogleGenAI({ apiKey });
+  // Always use the API_KEY from process.env directly in the constructor
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
@@ -35,7 +32,6 @@ export const findBestCorner = async (imageBase64: string): Promise<Corner> => {
           corner: {
             type: Type.STRING,
             description: "The identified best top corner",
-            enum: ['top-left', 'top-right']
           },
         },
         required: ["corner"],
@@ -44,8 +40,15 @@ export const findBestCorner = async (imageBase64: string): Promise<Corner> => {
   });
 
   try {
-    const data = JSON.parse(response.text);
-    return data.corner as Corner;
+    // Access the text property directly (not a method)
+    const text = response.text;
+    if (!text) throw new Error("Empty response from model");
+    const data = JSON.parse(text.trim());
+    const corner = data.corner;
+    if (corner === 'top-left' || corner === 'top-right') {
+      return corner as Corner;
+    }
+    return 'top-right'; 
   } catch (e) {
     console.error("Failed to parse Gemini response", e);
     return 'top-right'; // Fallback to top-right

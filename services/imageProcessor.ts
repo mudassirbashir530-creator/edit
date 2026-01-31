@@ -1,5 +1,20 @@
 
 import { Corner, BrandingConfig } from "../types";
+import { removeBackground } from "@imgly/background-removal";
+
+export const removeLogoBackground = async (file: File): Promise<Blob> => {
+  try {
+    const resultBlob = await removeBackground(file, {
+      progress: (key, current, total) => {
+        console.log(`Background Removal [${key}]: ${Math.round((current / total) * 100)}%`);
+      }
+    });
+    return resultBlob;
+  } catch (error) {
+    console.warn("Background removal failed, falling back to original file.", error);
+    return file;
+  }
+};
 
 export const processImage = async (
   backgroundImage: HTMLImageElement,
@@ -19,7 +34,7 @@ export const processImage = async (
   // 1. Draw Background
   ctx.drawImage(backgroundImage, 0, 0);
 
-  // 2. Draw Subtle Central Watermark
+  // 2. Draw Large Central Watermark
   // Forced 1.1 Aspect Ratio (Width / Height = 1.1)
   const wmWidth = canvas.width * config.watermarkScale;
   const wmHeight = wmWidth / 1.1; 
@@ -35,7 +50,7 @@ export const processImage = async (
   );
   ctx.restore();
 
-  // 3. Draw Corner Brand Logo
+  // 3. Draw Large Corner Brand Logo
   // Forced 1.1 Aspect Ratio (Width / Height = 1.1)
   const cornerLogoWidth = canvas.width * config.logoScale;
   const cornerLogoHeight = cornerLogoWidth / 1.1;
@@ -61,6 +76,9 @@ export const processImage = async (
       x = canvas.width - cornerLogoWidth - pad;
       y = canvas.height - cornerLogoHeight - pad;
       break;
+    default:
+      x = canvas.width - cornerLogoWidth - pad;
+      y = pad;
   }
 
   // Corner logo is full opacity (1.0)
@@ -79,19 +97,19 @@ export const processImage = async (
   });
 };
 
-export const fileToImage = (file: File): Promise<HTMLImageElement> => {
+export const fileToImage = (file: File | Blob): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = reject;
-    img.src = URL.createObjectURL(file);
+    img.src = URL.createObjectURL(file as Blob);
   });
 };
 
-export const imageToBase64 = (file: File): Promise<string> => {
+export const imageToBase64 = (file: File | Blob): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file as Blob);
     reader.onload = () => {
       const result = reader.result as string;
       resolve(result.split(',')[1]); // Remove data URL prefix
