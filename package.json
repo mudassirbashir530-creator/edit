@@ -1,9 +1,11 @@
-
 {
   "name": "ultra-hd-branding-studio",
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -12,11 +14,11 @@
   "dependencies": {
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "@google/genai": "^1.38.0",
+    "@google/genai": "^1.39.0",
     "jszip": "^3.10.1",
     "lucide-react": "^0.563.0",
-    "framer-motion": "^11.11.17",
-    "@imgly/background-removal": "^1.5.5"
+    "framer-motion": "^12.0.0",
+    "@imgly/background-removal": "^1.7.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
@@ -24,6 +26,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "terser": "^5.37.0",
     "typescript": "^5.7.2",
-    "vite": "^6.0.0"
+    "vite": "^5.4.11"
   }
 }
